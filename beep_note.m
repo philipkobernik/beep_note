@@ -6,7 +6,7 @@
 
 fs = 44100;
 ts = 1/fs;
-duration = 40;
+duration = 50;
 decay = 0.5;
 tt_whole = 0:ts:duration;
 tt_converge = 0:ts:.5*duration;
