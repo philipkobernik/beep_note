@@ -23,3 +23,6 @@ Open the folder in MATLAB. Open beep_note.m, press `Run` button. This script sav
 `num_harmonics` : change to 1 to only use the fundamental tone of each voice
 
 `voices_ending_freq` : update this array of frequencies to create a new chord voicing for the final resolution
+
+## Spectrogram
+![Spectrogram](https://raw.githubusercontent.com/philipkobernik/beep_note/main/beep_note_spectrogram.png)
