@@ -12,6 +12,8 @@ It uses 15 voices, each with 24 harmonics. The voices start in a jumbled mess ar
 
 The low-end voices are square waves, and the mids and high voices are sawtooth waves.
 
+Aliasing is avoided by simply removing harmonics that would dare glide above Nyquist frequency (half of sample rate).
+
 ## How to run
 Open the folder in MATLAB. Open beep_note.m, press `Run` button. This script saves the synthesized audio as `beep_note.wav` in your working folder.
 
@@ -25,4 +27,4 @@ Open the folder in MATLAB. Open beep_note.m, press `Run` button. This script sav
 `voices_ending_freq` : update this array of frequencies to create a new chord voicing for the final resolution
 
 ## Spectrogram
-![Spectrogram](https://raw.githubusercontent.com/philipkobernik/beep_note/main/beep_note_spectrogram.png)
+![Spectrogram](http://raw.githubusercontent.com/philipkobernik/beep_note/main/beep_note_spectrogram.png)
