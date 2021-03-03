@@ -1,16 +1,18 @@
 % BEEP NOTE
 % by Philip Kobernik
-% adapted from code by Yon Visell for UCSB class: ECE 130B, Winter 2021
+%
+% adapted from code by Yon Visell, prepared for
+% ECE 130B, Winter 2021, UC Santa Barbara
 
 fs = 44100;
 ts = 1/fs;
-duration = 30;
+duration = 40;
 decay = 0.5;
 tt_whole = 0:ts:duration;
 tt_converge = 0:ts:.5*duration;
 tt_fade_out = (.5*duration+ts):ts:duration+ts;
 num_voices = 15;
-num_harmonics = 12;
+num_harmonics = 24;
 
 voices_starting_freq = (rand(num_voices,1) * 150) + 250;
 voices_ending_freq = [ 73; 73; 73; 146; 146; 146; 292; 292; 584; 584; 1022; 1533; 2044; 3066; 4088; ];
@@ -21,13 +23,14 @@ fade_out_part = zeros(size(tt_fade_out));
 eliminated_harmonics = 0;
 
 for nv = 1:num_voices
-    
-    amps = 1./(3*(1:num_harmonics))' + 0.0 * randn(num_harmonics, 1);
+    voice_harmonic_weight = 1./((1.00 + nv*0.2)*(1:num_harmonics))';
+%     figure(nv);
+%     plot(voice_harmonic_weight);
+%     title("plot voice  " + nv);
+    amps = voice_harmonic_weight + 0.0 * randn(num_harmonics, 1);
     decay_harm = decay * ((1:num_harmonics))'.* (1.0 + 0.00*randn(num_harmonics, 1));
     freq_harm_start = voices_starting_freq(nv) * (1:num_harmonics)'.* (1.0 + 0.0 * randn(num_harmonics,1));
     freq_harm_end = voices_ending_freq(nv) * (1:num_harmonics)'.* (1.0 + 0.0 * randn(num_harmonics,1));
-    progress = tt_converge/length(tt_converge) * fs;
-    logistic = 1./(1+exp(-20*(progress-0.5)));
         
     for nh = 1:num_harmonics        
         if freq_harm_end(nh) < 22050
@@ -45,14 +48,14 @@ end
 eliminated_harmonics_above_nyquist_freq = eliminated_harmonics
 
 for nv = 1:num_voices
-    
-    amps = 1./(3*(1:num_harmonics))' + 0.1 * randn(num_harmonics, 1);
+    voice_harmonic_weight = 1./((1.00 + nv*0.2)*(1:num_harmonics))';
+    amps = voice_harmonic_weight + 0.0 * randn(num_harmonics, 1);
     decay_harm = decay * ((1:num_harmonics))'.* (1.0 + 0.1*randn(num_harmonics, 1));
-    freq_harm_end = voices_ending_freq(nv) * (1:num_harmonics)'.* (1.0 + 0.0 * randn(num_harmonics,1));
+    freq_harm = voices_ending_freq(nv) * (1:num_harmonics)'.* (1.0 + 0.0 * randn(num_harmonics,1));
         
     for nh = 1:num_harmonics
-        if freq_harm_end(nh) < 22050
-            fade_out_part = fade_out_part + amps(nh) .* exp(-decay_harm(nh)*tt_converge*1) .* sin(2*pi*(freq_harm_end(nh).*tt_fade_out));
+        if freq_harm(nh) < 22050
+            fade_out_part = fade_out_part + amps(nh) .* exp(-decay_harm(nh)*tt_converge) .* sin(2*pi*(freq_harm(nh).*tt_fade_out));
         end
     end
 
@@ -71,7 +74,7 @@ end
 % have been mixed into the end of converge_part
 final = [converge_part fade_out_part(fade_length+1:end)];
 
-filtered_beep_note = lpf_sweep_open(final, 2.5, fs);
+filtered_beep_note = lpf_sweep_open(final, 1.5, fs);
 
 filtered_beep_note = filtered_beep_note/max(abs(filtered_beep_note)); % normalize
 

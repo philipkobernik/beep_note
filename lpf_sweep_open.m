@@ -1,5 +1,6 @@
 function yy=lpf_sweep_open(xx, q, fs)
-    % adapted from code by Yon Visell for UCSB class: ECE 130B, Winter 2021
+    % adapted from code by Yon Visell, prepared for
+    % ECE 130B, Winter 2021, UC Santa Barbara
 
     % second order (biquad) lowpass digital filter
     % H(s) = (s^2 + s/Q + 1)^(-1)
